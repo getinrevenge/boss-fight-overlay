@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Boss Fight Overlay</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: #1e1e1e;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    #boss-container {
+      position: relative;
+      text-align: center;
+    }
+
+    #boss-img {
+      width: 300px;
+      height: auto;
+    }
+
+    #boss-name {
+      font-size: 2rem;
+      margin: 0.5rem 0;
+    }
+
+    #health-bar-container {
+      width: 320px;
+      height: 25px;
+      background: #444;
+      border: 2px solid #fff;
+      border-radius: 10px;
+      margin-bottom: 1rem;
+    }
+
+    #health-bar {
+      height: 100%;
+      background: #ff3e3e;
+      width: 100%;
+      border-radius: 8px;
+      transition: width 0.3s ease;
+    }
+
+    #log {
+      height: 100px;
+      overflow-y: auto;
+      font-size: 1rem;
+      width: 90%;
+      max-width: 500px;
+      background: #111;
+      border: 1px solid #333;
+      padding: 10px;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div id="boss-container">
+    <div id="boss-name">PowerPoint Golem</div>
+    <img id="boss-img" src="boss.webp" alt="Boss" />
+    <div id="health-bar-container">
+      <div id="health-bar"></div>
+    </div>
+  </div>
+  <div id="log"></div>
+
+  <script>
+    let maxHP = 100;
+    let currentHP = maxHP;
+    const hpBar = document.getElementById("health-bar");
+    const logBox = document.getElementById("log");
+
+    function dealDamage(user, amount) {
+      if (currentHP <= 0) return;
+
+      currentHP = Math.max(0, currentHP - amount);
+      const hpPercent = (currentHP / maxHP) * 100;
+      hpBar.style.width = hpPercent + "%";
+
+      const msg = document.createElement("div");
+      msg.textContent = `@${user} hit for ${amount} damage!`;
+      logBox.appendChild(msg);
+      logBox.scrollTop = logBox.scrollHeight;
+
+      if (currentHP === 0) {
+        const finalMsg = document.createElement("div");
+        finalMsg.innerHTML = `<strong>💀 Boss Defeated by @${user}!</strong>`;
+        logBox.appendChild(finalMsg);
+      }
+    }
+
+    // Sample gift simulation
+    setTimeout(() => dealDamage("Viewer123", 10), 1000);
+    setTimeout(() => dealDamage("SweatyIntern", 30), 3000);
+    setTimeout(() => dealDamage("LateToStandup", 60), 5000);
+  </script>
+</body>
+</html>
